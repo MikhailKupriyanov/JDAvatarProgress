@@ -322,4 +322,49 @@ const float JDAvatarDefaultBorderWidth = 5.0f;
     [self.layer addSublayer:self.spinLayer];
 }
 
+- (void)cancel {
+    [self _dismissProgressBar];
+    
+    __weak typeof(self) weakSelf = self;
+    [self.downloadTask cancelByProducingResumeData:^(NSData * currentData){
+        
+        weakSelf.downloadTask = nil;
+    }];
+}
+
+- (void)initUploadDataWithPlaceholder:(UIImage *)placeholder progressColor:(UIColor *)progressBarColor progressBarLineWidh:(float)width borderWidth:(float)borderWidth borderColor:(UIColor *)color completion:(JDAvatarCompletionBlock)completion {
+    if (placeholder) {
+        self.placeholderImage = placeholder;
+    }
+    
+    if (completion) {
+        self.completionBlock = completion;
+    }
+    
+    self.progressBarLineWidth = width;
+    
+    if (progressBarColor) {
+        self.progressBarColor = progressBarColor;
+    }
+    
+    self.borderWidth = borderWidth;
+    
+    if (color) {
+        self.borderColor = color;
+    }
+    
+    self.progress = 0.0f;
+    [self _initalizateProgressBar];
+    
+}
+
+- (void)setUploadProgress:(float) progress {
+    [self _setProgress:progress animated:YES];
+}
+
+- (void)uploadDataComplete {
+    [self _dismissProgressBar];
+    self.completionBlock(nil, nil);
+}
+
 @end

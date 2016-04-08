@@ -39,4 +39,14 @@ typedef void (^JDAvatarCompletionBlock)(UIImage * image, NSError *err);
 @property (nonatomic, strong) UIColor * progressBarColor;
 @property (nonatomic) float progressBarLineWidth;
 
+//Cancel downloading
+- (void)cancel;
+
+//Upload data
+- (void)initUploadDataWithPlaceholder:(UIImage *)placeholder progressColor:(UIColor *)progressBarColor progressBarLineWidh:(float)width borderWidth:(float)borderWidth borderColor:(UIColor *)color completion:(JDAvatarCompletionBlock)completion;
+
+- (void)setUploadProgress:(float) progress;
+
+- (void)uploadDataComplete;
+
 @end
