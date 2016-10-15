@@ -23,6 +23,8 @@ const float JDAvatarDefaultBorderWidth = 5.0f;
 @property (nonatomic) float progress;
 @property (nonatomic) float tickness;
 
+@property (nonatomic, strong) NSURL *urlImage;
+
 @property (nonatomic, copy) JDAvatarCompletionBlock completionBlock;
 
 @end
@@ -135,7 +137,7 @@ const float JDAvatarDefaultBorderWidth = 5.0f;
 }
 
 - (void) setImageWithURL:(NSURL *)urlImage placeholder:(UIImage *)placeholder progressColor:(UIColor *)progressBarColor progressBarLineWidh:(float)width borderWidth:(float)borderWidth borderColor:(UIColor *)color completion:(JDAvatarCompletionBlock)completion{
-    
+    self.urlImage = urlImage;
     if (self.downloadTask && self.downloadTask.state == NSURLSessionTaskStateRunning) {
         
         __weak typeof(self) weakSelf = self;
@@ -365,6 +367,15 @@ const float JDAvatarDefaultBorderWidth = 5.0f;
 - (void)uploadDataComplete {
     [self _dismissProgressBar];
     self.completionBlock(nil, nil);
+}
+
+- (void)suspend {
+    [self.downloadTask suspend];
+}
+
+- (void)resume {
+    self.downloadTask = [self.urlSession downloadTaskWithURL:self.urlImage];
+    [self.downloadTask resume];
 }
 
 @end

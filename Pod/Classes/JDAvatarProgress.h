@@ -49,4 +49,14 @@ typedef void (^JDAvatarCompletionBlock)(UIImage * image, NSError *err);
 
 - (void)uploadDataComplete;
 
+/**
+ *  Приостанавливаем закачку аватара
+ */
+- (void)suspend;
+
+/**
+ *  Возобновляем закачку аватара
+ */
+- (void)resume;
+
 @end
